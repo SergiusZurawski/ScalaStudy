@@ -27,6 +27,33 @@ class Cafe {
   }
 }
 
+class PolimopicFuncition
+{
+  def isSorted[A](as: Array[A], ordered: (A, A) => Boolean): Boolean ={
+    //as.
+  }
+
+  def isSortedInt(as: Array[Int], ordered: (Int, Int) => Boolean): Boolean ={
+
+  }
+
+  def isSortedInt(as: Array[Int]): Boolean ={
+
+  }
+
+  def isSortedIntNotRecursive(as: Array[Int]): Boolean ={
+    var item1: Int = 0
+    var item2: Int = 0
+    var index = 0;
+    for(item <-as)
+    {
+      index += 1;
+      if()
+    }
+  }
+
+}
+
 class Fibonacci {
   def fib(n: Int): Int = {
     @annotation.tailrec
@@ -85,20 +112,3 @@ class Fibonacci {
   }
 
 }
-/*
-*
-*  if(n <= 1) {
-        println("n<=0")
-        println(result)
-        result
-      }
-      else if(n == 2) {
-        println("n==1")
-        result + 1
-      }
-      else {
-        println("loop")
-        println("n: " + n)
-        println("result: " + result)
-        loop(n-1,result + n)
-      }*/
