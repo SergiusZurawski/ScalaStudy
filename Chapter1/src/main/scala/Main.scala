@@ -1,3 +1,5 @@
+import util.control.Breaks._
+
 object Main {
   def main(args: Array[String]): Unit = {
     println("Hello, world!")
@@ -6,7 +8,14 @@ object Main {
     //println(fibonacci.fiv(3))
     //println(fibonacci.fibNotTail(10))
     //println(fibonacci.fib(18))
-    println(fibonacci.fibNoIndex(18))
+    //println(fibonacci.fibNoIndex(18))
+    val parametrizedPolimorphism = new PolimopicFuncition();
+//    println(parametrizedPolimorphism.isSortedIntNotRecursive(Array(3, 2, 3)))
+//    println(parametrizedPolimorphism.isSortedIntNotRecursive(Array(1, 2, 3)))
+//    println(parametrizedPolimorphism.isSortedIntNotRecursive(Array(2, 2, 3)))
+//    println(parametrizedPolimorphism.isSortedIntNotRecursive(Array(1, 5, 3)))
+
+    println(parametrizedPolimorphism.isSortedInt(Array(1, 2, 3)))
 
   }
 }
@@ -31,25 +40,45 @@ class PolimopicFuncition
 {
   def isSorted[A](as: Array[A], ordered: (A, A) => Boolean): Boolean ={
     //as.
+    return false
   }
 
   def isSortedInt(as: Array[Int], ordered: (Int, Int) => Boolean): Boolean ={
-
+    return false
   }
 
   def isSortedInt(as: Array[Int]): Boolean ={
+    def loop(as: Array[Int], index: Int,  prvious: Int, current: Int, state: Boolean): Boolean = {
 
+
+    }
+
+    if (as.length < 1)
+      false
+
+    return
   }
 
   def isSortedIntNotRecursive(as: Array[Int]): Boolean ={
-    var item1: Int = 0
-    var item2: Int = 0
+    var previous: Int = 0
+    var current: Int = 0
     var index = 0;
     for(item <-as)
     {
       index += 1;
-      if()
+      current = item;
+      breakable {
+        if (index == 1) {
+          previous = current
+          break
+        }
+      }
+      if(current < previous)
+        return false
+
+      previous = current
     }
+    return true
   }
 
 }
