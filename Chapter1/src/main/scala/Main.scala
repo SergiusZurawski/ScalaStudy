@@ -1,3 +1,6 @@
+//https://github.com/fpinscala/fpinscala/
+
+
 object Main {
   def main(args: Array[String]): Unit = {
     println("Hello, world!")
@@ -133,4 +136,27 @@ class Fibonacci {
     loop(n)
   }
 
+}
+
+class CurringClass {
+  def curry[A, B, C](f: (A, B) => C) : A => (B => C) = {
+
+    return (a: A) => (b: B) => f(a, b)
+  }
+
+  def generateFunction(a: Int) : Int => String = {
+    return (a: Int) => a.toString
+  }
+
+  def curry[A, B, C](a: A, f:(A, B) => C): B => C = {
+    return (b: B) => f(a, b)
+  }
+
+  def uncurry[A,B,C](f: A => B => C): (A, B) => C = {
+    return (a: A, b: B) => f(a)(b)
+  }
+
+  def compose[A,B,C](f: B => C, g: A => B): A => C = {
+    return (a: A) => f(g(a))
+  }
 }
