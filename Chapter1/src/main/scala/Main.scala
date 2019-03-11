@@ -5,17 +5,32 @@ object Main {
     println("Hello, world!")
     println("Hello, THOMAS")
     val fibonacci = new Fibonacci()
+    val poli = new PolimopicFuncition()
     //println(fibonacci.fiv(3))
     //println(fibonacci.fibNotTail(10))
     //println(fibonacci.fib(18))
     //println(fibonacci.fibNoIndex(18))
-    val parametrizedPolimorphism = new PolimopicFuncition();
-//    println(parametrizedPolimorphism.isSortedIntNotRecursive(Array(3, 2, 3)))
-//    println(parametrizedPolimorphism.isSortedIntNotRecursive(Array(1, 2, 3)))
-//    println(parametrizedPolimorphism.isSortedIntNotRecursive(Array(2, 2, 3)))
-//    println(parametrizedPolimorphism.isSortedIntNotRecursive(Array(1, 5, 3)))
+    //val parametrizedPolimorphism = new PolimopicFuncition();
+//    println(poli.isSortedIntNotRecursive(Array(3, 2, 3)))
+//    println(poli.isSortedIntNotRecursive(Array(1, 2, 3)))
+//    println(poli.isSortedIntNotRecursive(Array(2, 2, 3)))
+//    println(poli.isSortedIntNotRecursive(Array(1, 5, 3)))
 
-    println(parametrizedPolimorphism.isSortedInt(Array(1, 2, 3)))
+//    println(poli.isSortedInt(Array(1, 2, 3)))
+//    println(fibonacci.fibNoIndex(18))
+    val fun = (a: Int, b: Int) => {if(a >= b)true; else false}
+    val funChars = (a: Char, b: Char) => {if(a <= b)true; else false}
+    println("true: " + poli.isSorted(Array(1, 2, 3), fun))
+    println("true: " + poli.isSorted(Array(2, 2, 3), fun))
+    println("false: " + poli.isSorted(Array(3, 2, 3), fun))
+    println("false: " + poli.isSorted(Array(1, 10, 3), fun))
+    println("true: " + poli.isSorted(Array(-3, -2, 1), fun))
+    println("false: " + poli.isSorted(Array(-3, 2, 1), fun))
+
+    println("char true: " + poli.isSorted(Array('A', 'B', 'C'), funChars))
+    println("char true: " + poli.isSorted(Array('B', 'B', 'C'), funChars))
+    println("char true: " + poli.isSorted(Array('A', 'B', 'C'), funChars))
+
 
   }
 }
@@ -39,32 +54,50 @@ class Cafe {
 class PolimopicFuncition
 {
   def isSorted[A](as: Array[A], ordered: (A, A) => Boolean): Boolean ={
-    //as.
-    return false
-  }
+    @annotation.tailrec
+    def loop(as: Array[A], index: Int,  previous: A, ordered: (A, A) => Boolean): Boolean = {
 
-  def isSortedInt(as: Array[Int], ordered: (Int, Int) => Boolean): Boolean ={
-    return false
-  }
+      if(index >= as.length)
+        return true
 
-  def isSortedInt(as: Array[Int]): Boolean ={
-    def loop(as: Array[Int], index: Int,  prvious: Int, current: Int, state: Boolean): Boolean = {
+      val current = as(index)
+      if(!ordered(current, previous))
+        return false
 
-
+      loop(as, index+1, current, ordered)
+    }
+    if(as.length < 1) {
+      return false
     }
 
-    if (as.length < 1)
-      false
-
-    return
+    return loop(as, 1, as(0), ordered);
   }
 
-  def isSortedIntNotRecursive(as: Array[Int]): Boolean ={
+  def isSortedIntWithFunction(as: Array[Int], ordered: (Int, Int) => Boolean): Boolean = {
+    @annotation.tailrec
+    def loop(as: Array[Int], index: Int,  previous: Int, ordered: (Int, Int) => Boolean): Boolean = {
+
+      if(index>= as.length)
+        return true
+
+      val current = as(index)
+      if(!ordered(current, previous))
+        return false
+
+      loop(as, index+1, current, ordered)
+    }
+    if(as.length < 1) {
+      false
+    }
+
+    return loop(as, 1, as(0), ordered);
+  }
+
+  def isSortedIntNotRecursive(as: Array[Int]): Boolean = {
     var previous: Int = 0
     var current: Int = 0
     var index = 0;
-    for(item <-as)
-    {
+    for (item <- as) {
       index += 1;
       current = item;
       breakable {
@@ -73,13 +106,36 @@ class PolimopicFuncition
           break
         }
       }
-      if(current < previous)
+      if (current < previous)
         return false
 
       previous = current
     }
     return true
   }
+
+  def isSortedInt(as: Array[Int]): Boolean ={
+    @annotation.tailrec
+    def loop(as: Array[Int], index: Int, previous: Int ): Boolean = {
+
+      if(as.length <= index)
+        return true
+
+      val current = as(index)
+      if(current < previous)
+        return false
+
+      loop(as, index+1, current)
+    }
+
+    if(as.length < 1) {
+      false
+    }
+
+
+    return loop(as, 1, as(0))
+  }
+
 
 }
 
