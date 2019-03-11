@@ -1,6 +1,7 @@
 //https://github.com/fpinscala/fpinscala/
 import util.control.Breaks._
 
+
 object Main {
   def main(args: Array[String]): Unit = {
     println("Hello, world!")
@@ -19,22 +20,25 @@ object Main {
 
 //    println(poli.isSortedInt(Array(1, 2, 3)))
 //    println(fibonacci.fibNoIndex(18))
-    val fun = (a: Int, b: Int) => {if(a >= b)true; else false}
-    val funChars = (a: Char, b: Char) => {if(a <= b)true; else false}
-    println("true: " + poli.isSorted(Array(1, 2, 3), fun))
-    println("true: " + poli.isSorted(Array(2, 2, 3), fun))
-    println("false: " + poli.isSorted(Array(3, 2, 3), fun))
-    println("false: " + poli.isSorted(Array(1, 10, 3), fun))
-    println("true: " + poli.isSorted(Array(-3, -2, 1), fun))
-    println("false: " + poli.isSorted(Array(-3, 2, 1), fun))
+//    val fun = (a: Int, b: Int) => {if(a >= b)true; else false}
+//    val funChars = (a: Char, b: Char) => {if(a <= b)true; else false}
+//    println("true: " + poli.isSorted(Array(1, 2, 3), fun))
+//    println("true: " + poli.isSorted(Array(2, 2, 3), fun))
+//    println("false: " + poli.isSorted(Array(3, 2, 3), fun))
+//    println("false: " + poli.isSorted(Array(1, 10, 3), fun))
+//    println("true: " + poli.isSorted(Array(-3, -2, 1), fun))
+//    println("false: " + poli.isSorted(Array(-3, 2, 1), fun))
+//
+//    println("char true: " + poli.isSorted(Array('A', 'B', 'C'), funChars))
+//    println("char true: " + poli.isSorted(Array('B', 'B', 'C'), funChars))
+//    println("char true: " + poli.isSorted(Array('A', 'B', 'C'), funChars))
 
-    println("char true: " + poli.isSorted(Array('A', 'B', 'C'), funChars))
-    println("char true: " + poli.isSorted(Array('B', 'B', 'C'), funChars))
-    println("char true: " + poli.isSorted(Array('A', 'B', 'C'), funChars))
+    val l: DataStructures.List[Int]  = DataStructures.List[Int](1,2)
 
 
   }
 }
+
 
 class Cafe {
   var myVar: String = "From Cafee"
@@ -221,3 +225,4 @@ class CurringClass {
     return (a: A) => f(g(a))
   }
 }
+
