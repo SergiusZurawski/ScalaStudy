@@ -1,2 +1,3 @@
-*.class
-*.log
+Chapter1/project/target
+Chapter1/.idea
+Chapter1/project/target/**
