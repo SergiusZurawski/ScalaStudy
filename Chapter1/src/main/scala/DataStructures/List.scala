@@ -59,9 +59,28 @@ object List { // `List` companion object. Contains functions for creating and wo
 
   def setHead[A](l: List[A], h: A): List[A] = ???
 
-  def drop[A](l: List[A], n: Int): List[A] = ???
+  def drop[A](l: List[A], n: Int): List[A] = l match {
+    case Nil => sys.error("drop on empty list")
+    case xs if n <= 0 => xs
+    case Cons(x, xs) => drop(xs, n-1)
+  }
 
-  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = ???
+  def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
+    case Cons(x, xs) if !f(x) => println("if case"+ xs);dropWhile(xs, f)
+    case xs => println("defalut case"+ xs);xs
+  }
+
+  println("dropWhile ----:")
+  println(dropWhile(List(1,2,3,4), (x:Int) => x/2 == 0))
+
+  def dropFilter[A](l: List[A], f: A => Boolean): List[A] = l match {
+    case Cons(x, xs) if !f(x) => println("if case"+ xs);dropFilter(xs, f)
+    case xs => println("defalut case"+ xs);xs
+  }
+
+  println("dropFilter ----:")
+  println(dropWhile(List(1,2,3,4), (x:Int) => x/2 == 0))
+
 
   def init[A](l: List[A]): List[A] = ???
 
