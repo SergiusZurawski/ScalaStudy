@@ -55,9 +55,21 @@ object List { // `List` companion object. Contains functions for creating and wo
     foldRight(ns, 1.0)(_ * _) // `_ * _` is more concise notation for `(x,y) => x * y`; see sidebar
 
 
-  def tail[A](l: List[A]): List[A] = ???
+  def tail[A](l: List[A]): List[A] = l match {
+    case Nil => Nil
+    case Cons(head, tail) => tail
+  }
 
-  def setHead[A](l: List[A], h: A): List[A] = ???
+  println("tail ----:")
+  println(tail(List(1,2,3,4)))
+
+  def setHead[A](l: List[A], h: A): List[A] = l match {
+    case Nil => Nil
+    case Cons(head, tail) => Cons(h, tail)
+  }
+
+  println("setHead ----:")
+  println(setHead(List(1,2,3,4), 0))
 
   def drop[A](l: List[A], n: Int): List[A] = l match {
     case Nil => sys.error("drop on empty list")
