@@ -78,23 +78,32 @@ object List { // `List` companion object. Contains functions for creating and wo
   }
 
   def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
+    case Nil => Nil
     case Cons(x, xs) if !f(x) => println("if case"+ xs);dropWhile(xs, f)
-    case xs => println("defalut case"+ xs);xs
+    case _ => l
   }
 
   println("dropWhile ----:")
-  println(dropWhile(List(1,2,3,4), (x:Int) => x/2 == 0))
+  println(dropWhile(List(1,2,3,4), (x:Int) => x%2 == 0))
 
   def dropFilter[A](l: List[A], f: A => Boolean): List[A] = l match {
+    case Nil => Nil
     case Cons(x, xs) if !f(x) => println("if case"+ xs);dropFilter(xs, f)
-    case xs => println("defalut case"+ xs);xs
+    case Cons(x, xs) => println("defalut case"+ xs); Cons(x, dropFilter(xs,f))
   }
 
   println("dropFilter ----:")
-  println(dropWhile(List(1,2,3,4), (x:Int) => x/2 == 0))
+  println(dropFilter(List(1,2,3,4), (x:Int) => x%2 == 0))
 
 
-  def init[A](l: List[A]): List[A] = ???
+  def init[A](l: List[A]): List[A] = l match {
+    case Nil => Nil
+    case Cons(head, Nil) => Nil
+    case Cons(x, xs) => Cons(x, init(xs))
+  }
+
+  println("init ----:")
+  println(init(List(1,2,3,4)))
 
   def length[A](l: List[A]): Int = ???
 
