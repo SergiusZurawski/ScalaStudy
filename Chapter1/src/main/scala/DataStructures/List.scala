@@ -107,7 +107,34 @@ object List { // `List` companion object. Contains functions for creating and wo
 
   def length[A](l: List[A]): Int = ???
 
-  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = ???
+  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B =  {
+    @annotation.tailrec
+    def tailRec(l: List[A], z: B, sum: B): B = l match {
+      case Nil => z
+      case Cons(x, xs) => tailRec(xs, z, f(sum, x))
+    }
+    tailRec(l, z, l(0))
+  }
+
+  println("foldLeft ----:")
+  println(foldLeft(List(1,2,3,4), 0)((a, b) => a + b))
+//  def foldLeftNotParametrized[A](l: List[A], z: A): A = {
+//    @annotation.tailrec
+//    def tailRec(l: List[A], z: A, sum: A): A = l match {
+//      case Nil => z
+//      case Cons(x, xs) => tailRec(xs, z, sum + x)
+//    }
+//    tailRec(l, z, l(0))
+//  }
+
+  def foldLeftNotParametrized(l: List[Int], z: Int): Int = {
+    @annotation.tailrec
+    def tailRec1(l: List[Int], z: Int, sum: Int): Int = l match {
+      case Nil => z
+      case Cons(x, xs) => tailRec1(xs, z, sum + x)
+    }
+    tailRec1(l, z, 0)
+  }
 
   def map[A,B](l: List[A])(f: A => B): List[B] = ???
 }
