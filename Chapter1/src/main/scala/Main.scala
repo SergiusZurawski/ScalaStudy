@@ -35,15 +35,15 @@ object Main {
 
     val l: DataStructures.List[Int]  = DataStructures.List[Int](1,2)
 
-    def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
-      case Nil => Nil
-      case x::xs if !f(x) => dropWhile(xs, f)
-      case x::xs => x::dropWhile(xs, f)
-    }
-
-    println("dropWhile2 ----:")
-    println(List(1,2,3,4))
-    println(dropWhile(List(1,2,3,4), (x:Int) => { println("--------x:" + x + "function :" + x%2 == 0); x%2 == 0;}))
+//    def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
+//      case Nil => Nil
+//      case x::xs if !f(x) => dropWhile(xs, f)
+//      case x::xs => x::dropWhile(xs, f)
+//    }
+//
+//    println("dropWhile2 ----:")
+//    println(List(1,2,3,4))
+//    println(dropWhile(List(1,2,3,4), (x:Int) => { println("--------x:" + x + "function :" + x%2 == 0); x%2 == 0;}))
   }
 }
 

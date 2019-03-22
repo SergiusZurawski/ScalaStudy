@@ -107,24 +107,34 @@ object List { // `List` companion object. Contains functions for creating and wo
 
   def length[A](l: List[A]): Int = ???
 
-  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B =  {
+  def foldLeftImperfect[A,B](l: List[A], z: B)(f: (B, A) => B): B =  {
     @annotation.tailrec
     def tailRec(l: List[A], z: B, sum: B): B = l match {
-      case Nil => z
+      case Nil => sum
       case Cons(x, xs) => tailRec(xs, z, f(sum, x))
     }
-    tailRec(l, z, l(0))
+    tailRec(l, z, z)
+  }
+
+  @annotation.tailrec
+  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B =  l match{
+    case Nil => z
+    case Cons(head, tail) => foldLeft(tail, f(z, head))(f)
   }
 
   println("foldLeft ----:")
-  println(foldLeft(List(1,2,3,4), 0)((a, b) => a + b))
+  println(foldLeftImperfect(List(1,2,3,4), 0)((x, y) => x + y))
+  println(foldLeftImperfect(List(1,2,3,4), 1)((x, y) => x * y))
+  println(foldLeft(List(1,2,3,4), 0)((x, y) => x + y))
+  println(foldLeft(List(1,2,3,4), 1)((x, y) => x * y))
+//  println(foldLeft(List(1,2,3,4), 0)((a, b) => a + b))
 //  def foldLeftNotParametrized[A](l: List[A], z: A): A = {
 //    @annotation.tailrec
 //    def tailRec(l: List[A], z: A, sum: A): A = l match {
 //      case Nil => z
 //      case Cons(x, xs) => tailRec(xs, z, sum + x)
 //    }
-//    tailRec(l, z, l(0))
+//    tailRec(l, z, z)
 //  }
 
   def foldLeftNotParametrized(l: List[Int], z: Int): Int = {
@@ -135,6 +145,19 @@ object List { // `List` companion object. Contains functions for creating and wo
     }
     tailRec1(l, z, 0)
   }
+
+  def sum3(l: List[Int]): Int = foldLeft(l, 0)(_ + _)
+  def product3(l: List[Double]): Double = foldLeft(l, 1.0)(_ * _)
+  def lenght3[A](l: List[A]): Int = foldLeft(l, 0)((a, b) => a + 1)
+
+  println("CombinationOfFunction ----:")
+  println(sum3(List(1,2,3)))
+  println(product3(List(1,2,3)))
+  println(lenght3(List(1,2,3)))
+
+  def reverse[A](l: List[A]): List[A] = foldLeft(l, List())((a,b) => Cons(a, b))
+  println("reverse ----:")
+  println(sum3(List(1,2,3)))
 
   def map[A,B](l: List[A])(f: A => B): List[B] = ???
 }
