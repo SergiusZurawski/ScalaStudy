@@ -155,13 +155,37 @@ object List { // `List` companion object. Contains functions for creating and wo
   println(product3(List(1,2,3)))
   println(lenght3(List(1,2,3)))
 
-  def reverse[A,B](l: List[A]): List[A] = foldLeft[A,List[A]](l, List[A]())((a:List[A],b: A) => Cons(b, a))
+  def reverse[A](l: List[A]): List[A] = foldLeft[A, List[A]](l:List[A], List())((a,b) => Cons(b, a))
   println("reverse ----:")
   println(reverse(List(1,2,3)))
 
-  def foldRighInTermOfFoldLef[A,B](l: List[A], z: B)(f: (A,B) => B): B = foldLeft[A,B](l:List[A], z: B)((a, b) => f(b, a))
-  println("foldRighInTermOfFoldLef ----:")
+  def foldRightInFoldLeft[A,B](as: List[A], z: B)(f: (A, B) => B): B = foldLeft(as, z)((a, b) => f(b,a))
+  def sum3(ns: List[Int]): List[Int] = foldRightInFoldLeft
+  println("reverse ----:")
   println(reverse(List(1,2,3)))
+  /***
+    FoldRight
+    def sum2(ns: List[Int]) = foldRight(ns, 0)((x,y) => x + y)
+    sum2(List(1,2,3))
+    Cons(x, xs) => f(x, foldRight(xs, z)(f))
+    Cons(1, List(2,3,Nil)) => f(1, foldRight(List(2,3,Nil), 0)(f))
+    Cons(2, List(3,Nil))   => f(2, foldRight(List(3,Nil),   0)(f))
+    Cons(3, List(Nil))     => f(3, foldRight(List(Nil),     0)(f))
+
+    f(1, foldRight(f(2, foldRight(f(3, foldRight(List(Nil)))
+
+    f(1 + f(2 + f(3 + (Nill))))
+
+    FoldLeft
+    def sum2(ns: List[Int]) = FoldLeft(ns, 0)((x,y) => x + y)
+    sum2(List(1,2,3))
+    Cons(head, tail) => foldLeft(tail, f(z, head))(f)
+    Cons(1, List(2,3,Nil)) => foldLeft(List(2,3,Nil), f(0, 1))(f)
+    Cons(2, List(3,Nil))   => foldLeft(List(3,Nil),   f(1, 2))(f)
+    Cons(3, List(Nil))     => foldLeft(List(Nil),     f(3, 3))(f)
+    foldLeft(foldLeft(foldLeft(List(Nil),3 ),2) 1) 0
+    fl(Nil + f(3 + f(2 + f(1 + 0)))
+  */
 
 
   def map[A,B](l: List[A])(f: A => B): List[B] = ???
