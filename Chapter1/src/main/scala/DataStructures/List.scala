@@ -155,9 +155,14 @@ object List { // `List` companion object. Contains functions for creating and wo
   println(product3(List(1,2,3)))
   println(lenght3(List(1,2,3)))
 
-  def reverse[A](l: List[A]): List[A] = foldLeft(l, List())((a,b) => Cons(a, b))
+  def reverse[A,B](l: List[A]): List[A] = foldLeft[A,List[A]](l, List[A]())((a:List[A],b: A) => Cons(b, a))
   println("reverse ----:")
-  println(sum3(List(1,2,3)))
+  println(reverse(List(1,2,3)))
+
+  def foldRighInTermOfFoldLef[A,B](l: List[A], z: B)(f: (A,B) => B): B = foldLeft[A,B](l:List[A], z: B)((a, b) => f(b, a))
+  println("foldRighInTermOfFoldLef ----:")
+  println(reverse(List(1,2,3)))
+
 
   def map[A,B](l: List[A])(f: A => B): List[B] = ???
 }
