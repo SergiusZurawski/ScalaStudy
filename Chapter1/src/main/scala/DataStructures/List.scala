@@ -159,19 +159,30 @@ object List { // `List` companion object. Contains functions for creating and wo
   println("reverse ----:")
   println(reverse(List(1,2,3)))
 
-  def foldRightInFoldLeft[A,B](as: List[A], z: B)(f: (A, B) => B): B = foldLeft(as, z)((a, b) => f(b,a))
+  def foldRightInFoldLeft[A,B](as: List[A], z: B)(f: (A, B) => B): B = foldLeft(reverse(as), z)((a, b) => f(b,a))
+  def foldRightInFoldLeft[A,B](as: List[A], z: B)(f: (A, B) => B): B = foldLeft(reverse(as), z)((a, b) => f(b,a))
+
+  //def foldRightInFoldLeft[A,List[A]](as: List[A], z: List[A])(f: (A, List[A]) => List[A]): List[A] = foldLeft[A, List[A]](reverse[A](as):List[A], z:List[A])((a:A, b:List[A]) => f(b,a))
   /***
-      foldRightInFoldLeft(List(1,2,3), 0)(f:(a, b) => a+b) = foldLeft(List(1,2,3), 0)
-      foldLeft(List(2,3,Nil), f(0 + 1))
-      foldLeft(List(3,Nil), f(1 + 2))
-      foldLeft(List(3,Nil), f(3 + 3))
-      foldLeft(List(Nil), f(3 + Nil))
 
-      foldLeft(f(f(f(f(0 + 1) + 2) + 3)+ Nil))
+      without reverse and with (a, b) => f(b,a)
+        foldRightInFoldLeft(List(1,2,3), 0)(f:(a, b) => a+b) = foldLeft(List(1,2,3), 0)
+        foldLeft(List(2,3,Nil), f(0 + 1))
+        foldLeft(List(3,Nil), f(1 + 2))
+        foldLeft(List(3,Nil), f(3 + 3))
+        foldLeft(List(Nil), f(3 + Nil))
 
-    f(0 + 1) + 2 + 3 +  Nil
-    Fold Left
-    From Left to Right
+        foldLeft(f(f(f(f(0 + 1) + 2) + 3)+ Nil))
+
+        f(0 + 1) + 2 + 3 +  Nil
+        Fold Left
+        From Left to Right
+
+    with reverse:
+
+    List()                 3 => 3 List()                  => Cons(3, List)
+    Cons(3, List)          2 => 2 Cons(3, List)           => Cons(2, Cons(3, List))
+    Cons(2, Cons(3, List)) 1 => Cons(2, Cons(3, List)) 1  => Cons(1, Cons(2, Cons(3, List)))
 
 
     ***/
@@ -218,7 +229,8 @@ object List { // `List` companion object. Contains functions for creating and wo
 
   def foldLeftViaRight[A,B](l:List[A], z: B)(f: (B, A) => B): B = foldRight(l, z)((a, b)=> f(b, a))
 
-  def appendFL[A](a1: List[A], a2: List[A]): List[A] =  foldLeft(as, z)((a, b) => f(b,a))
+
+  //def appendFL[A](a1: List[A], a2: List[A]): List[A] =  foldLeft(as, z)((a, b) => f(b,a))
 
   def appendFL[A](a1: List[A], a2: List[A]): List[A] =  a1 match {
     case Nil => a2
