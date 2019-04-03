@@ -160,9 +160,12 @@ object List { // `List` companion object. Contains functions for creating and wo
   println(reverse(List(1,2,3)))
 
   def foldRightInFoldLeft[A,B](as: List[A], z: B)(f: (A, B) => B): B = foldLeft(as, z)((a, b) => f(b,a))
-  def sum3(ns: List[Int]): List[Int] = foldRightInFoldLeft
-  println("reverse ----:")
-  println(reverse(List(1,2,3)))
+  def foldLeftInFoldRight[A,B](as: List[A], z: B)(f: (B, A) => B): B = foldRight(as, z)((b, a) => f(a,b))
+  //def sum3(ns: List[Int]): List[Int] = foldRightInFoldLeft
+  println("foldRightInFoldLeft ----:")
+  println(foldRightInFoldLeft[Int, List[Int]](List(1,2,3), List[Int]())((a:Int, b: List[Int]) => {println("a:" + a + " b:" + b);Cons(a, b)}))
+  println("foldLeftInFoldRight ----:")
+  println(foldLeftInFoldRight[Int, List[Int]](List(1,2,3), List[Int]())(( b: List[Int], a:Int) => {println("a:" + a + " b:" + b);Cons(a, b)}))
   /***
     FoldRight
     def sum2(ns: List[Int]) = foldRight(ns, 0)((x,y) => x + y)
@@ -187,5 +190,12 @@ object List { // `List` companion object. Contains functions for creating and wo
     fl(Nil + f(3 + f(2 + f(1 + 0)))
   */
 
+  def appendLF[A](l1: List[A], l2: List[A]): List[A] = foldLeft[A, List[A]](reverse(l1), l2)((tail, h) => Cons(h, tail))
+  def appendLR[A](l1: List[A], l2: List[A]): List[A] = foldRight[A, List[A]](reverse(l1), l2)((h, tail) => Cons(h, tail))
+
   def map[A,B](l: List[A])(f: A => B): List[B] = ???
+  println("appendLF")
+  println(Cons(List(1,2), List(2,3)))
+  println(appendLF(List(1,2), List(2,3)))
+  println(appendLR(List(1,2), List(2,3)))
 }
