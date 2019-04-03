@@ -159,6 +159,7 @@ object List { // `List` companion object. Contains functions for creating and wo
   println("reverse ----:")
   println(reverse(List(1,2,3)))
 
+<<<<<<< HEAD
   def foldRightInFoldLeft[A,B](as: List[A], z: B)(f: (A, B) => B): B = foldLeft(as, z)((a, b) => f(b,a))
   def foldLeftInFoldRight[A,B](as: List[A], z: B)(f: (B, A) => B): B = foldRight(as, z)((b, a) => f(a,b))
   //def sum3(ns: List[Int]): List[Int] = foldRightInFoldLeft
@@ -166,8 +167,45 @@ object List { // `List` companion object. Contains functions for creating and wo
   println(foldRightInFoldLeft[Int, List[Int]](List(1,2,3), List[Int]())((a:Int, b: List[Int]) => {println("a:" + a + " b:" + b);Cons(a, b)}))
   println("foldLeftInFoldRight ----:")
   println(foldLeftInFoldRight[Int, List[Int]](List(1,2,3), List[Int]())(( b: List[Int], a:Int) => {println("a:" + a + " b:" + b);Cons(a, b)}))
+=======
+  def foldRightInFoldLeft[A,B](as: List[A], z: B)(f: (A, B) => B): B = foldLeft(reverse(as), z)((a, b) => f(b,a))
+  def foldRightInFoldLeft[A,B](as: List[A], z: B)(f: (A, B) => B): B = foldLeft(reverse(as), z)((a, b) => f(b,a))
+
+  //def foldRightInFoldLeft[A,List[A]](as: List[A], z: List[A])(f: (A, List[A]) => List[A]): List[A] = foldLeft[A, List[A]](reverse[A](as):List[A], z:List[A])((a:A, b:List[A]) => f(b,a))
   /***
-    FoldRight
+
+      without reverse and with (a, b) => f(b,a)
+        foldRightInFoldLeft(List(1,2,3), 0)(f:(a, b) => a+b) = foldLeft(List(1,2,3), 0)
+        foldLeft(List(2,3,Nil), f(0 + 1))
+        foldLeft(List(3,Nil), f(1 + 2))
+        foldLeft(List(3,Nil), f(3 + 3))
+        foldLeft(List(Nil), f(3 + Nil))
+
+        foldLeft(f(f(f(f(0 + 1) + 2) + 3)+ Nil))
+
+        f(0 + 1) + 2 + 3 +  Nil
+        Fold Left
+        From Left to Right
+
+    with reverse:
+
+    List()                 3 => 3 List()                  => Cons(3, List)
+    Cons(3, List)          2 => 2 Cons(3, List)           => Cons(2, Cons(3, List))
+    Cons(2, Cons(3, List)) 1 => Cons(2, Cons(3, List)) 1  => Cons(1, Cons(2, Cons(3, List)))
+
+
+    ***/
+
+  def sum4(ns: List[Int]): Int = foldRightInFoldLeft(ns, 0)((a:Int,b:Int) => a + b)
+  println("sum4---:")
+  println(sum4(List(1,2,3)))
+   
+  def reverse2[A](l: List[A]): List[A] = foldRightInFoldLeft[A, List[A]](l, List())((a,b) => Cons(a,b))
+  println("reverse2---:")
+  println(reverse2(List(1,2,3)))
+
+  /***
+    FoldRight - From right to left
     def sum2(ns: List[Int]) = foldRight(ns, 0)((x,y) => x + y)
     sum2(List(1,2,3))
     Cons(x, xs) => f(x, foldRight(xs, z)(f))
@@ -178,8 +216,13 @@ object List { // `List` companion object. Contains functions for creating and wo
     f(1, foldRight(f(2, foldRight(f(3, foldRight(List(Nil)))
 
     f(1 + f(2 + f(3 + (Nill))))
+    Result is derived
+    at the begining we are getting result of
+      Nil + 3 + 2 + 1
 
-    FoldLeft
+
+
+    FoldLeft - from left to right
     def sum2(ns: List[Int]) = FoldLeft(ns, 0)((x,y) => x + y)
     sum2(List(1,2,3))
     Cons(head, tail) => foldLeft(tail, f(z, head))(f)
@@ -188,6 +231,9 @@ object List { // `List` companion object. Contains functions for creating and wo
     Cons(3, List(Nil))     => foldLeft(List(Nil),     f(3, 3))(f)
     foldLeft(foldLeft(foldLeft(List(Nil),3 ),2) 1) 0
     fl(Nil + f(3 + f(2 + f(1 + 0)))
+
+    First Value is immediately known.
+    1 + 2 + 3 + Nil
   */
 
   def appendLF[A](l1: List[A], l2: List[A]): List[A] = foldLeft[A, List[A]](reverse(l1), l2)((tail, h) => Cons(h, tail))
@@ -198,4 +244,16 @@ object List { // `List` companion object. Contains functions for creating and wo
   println(Cons(List(1,2), List(2,3)))
   println(appendLF(List(1,2), List(2,3)))
   println(appendLR(List(1,2), List(2,3)))
+
+  def foldLeftViaRight[A,B](l:List[A], z: B)(f: (B, A) => B): B = foldRight(l, z)((a, b)=> f(b, a))
+
+
+  //def appendFL[A](a1: List[A], a2: List[A]): List[A] =  foldLeft(as, z)((a, b) => f(b,a))
+
+//  def appendFL[A](a1: List[A], a2: List[A]): List[A] =  a1 match {
+//    case Nil => a2
+//    case Cons(x, xs) => appendFL(xs, a2)
+//  }
+  def map[A,B](l: List[A])(f: A => B): List[B] = ???
 }
+
