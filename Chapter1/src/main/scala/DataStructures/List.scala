@@ -159,7 +159,7 @@ object List { // `List` companion object. Contains functions for creating and wo
   println("reverse ----:")
   println(reverse(List(1,2,3)))
 
-<<<<<<< HEAD
+
   def foldRightInFoldLeft[A,B](as: List[A], z: B)(f: (A, B) => B): B = foldLeft(as, z)((a, b) => f(b,a))
   def foldLeftInFoldRight[A,B](as: List[A], z: B)(f: (B, A) => B): B = foldRight(as, z)((b, a) => f(a,b))
   //def sum3(ns: List[Int]): List[Int] = foldRightInFoldLeft
@@ -167,9 +167,9 @@ object List { // `List` companion object. Contains functions for creating and wo
   println(foldRightInFoldLeft[Int, List[Int]](List(1,2,3), List[Int]())((a:Int, b: List[Int]) => {println("a:" + a + " b:" + b);Cons(a, b)}))
   println("foldLeftInFoldRight ----:")
   println(foldLeftInFoldRight[Int, List[Int]](List(1,2,3), List[Int]())(( b: List[Int], a:Int) => {println("a:" + a + " b:" + b);Cons(a, b)}))
-=======
-  def foldRightInFoldLeft[A,B](as: List[A], z: B)(f: (A, B) => B): B = foldLeft(reverse(as), z)((a, b) => f(b,a))
-  def foldRightInFoldLeft[A,B](as: List[A], z: B)(f: (A, B) => B): B = foldLeft(reverse(as), z)((a, b) => f(b,a))
+
+  def foldRightInFoldLeft2[A,B](as: List[A], z: B)(f: (A, B) => B): B = foldLeft(reverse(as), z)((a, b) => f(b,a))
+//  def foldRightInFoldLeft[A,B](as: List[A], z: B)(f: (A, B) => B): B = foldLeft(reverse(as), z)((a, b) => f(b,a))
 
   //def foldRightInFoldLeft[A,List[A]](as: List[A], z: List[A])(f: (A, List[A]) => List[A]): List[A] = foldLeft[A, List[A]](reverse[A](as):List[A], z:List[A])((a:A, b:List[A]) => f(b,a))
   /***
@@ -239,21 +239,45 @@ object List { // `List` companion object. Contains functions for creating and wo
   def appendLF[A](l1: List[A], l2: List[A]): List[A] = foldLeft[A, List[A]](reverse(l1), l2)((tail, h) => Cons(h, tail))
   def appendLR[A](l1: List[A], l2: List[A]): List[A] = foldRight[A, List[A]](reverse(l1), l2)((h, tail) => Cons(h, tail))
 
-  def map[A,B](l: List[A])(f: A => B): List[B] = ???
+
   println("appendLF")
   println(Cons(List(1,2), List(2,3)))
   println(appendLF(List(1,2), List(2,3)))
   println(appendLR(List(1,2), List(2,3)))
+  println("appendLRImproved")
+  def appendLRImproved[A](l1: List[A], l2: List[A]): List[A] = foldRight[A, List[A]](l1, l2)((h, tail) => Cons(h, tail))
+  println(appendLRImproved(List(1,2), List(2,3)))
+
+  /*
+      case Nil => z
+      case Cons(x, xs) => f(x, foldRight(xs, z)(f))
+
+    (1,2), (3,4)
+
+    Cons(1,Cons(2, (3,4)))
+
+  */
+
 
   def foldLeftViaRight[A,B](l:List[A], z: B)(f: (B, A) => B): B = foldRight(l, z)((a, b)=> f(b, a))
 
 
-  //def appendFL[A](a1: List[A], a2: List[A]): List[A] =  foldLeft(as, z)((a, b) => f(b,a))
+  def flat(l:List[List[Int]], z: List[Int]): List[Int] = foldRight[List[Int],List[Int]](l:List[List[Int]], z:List[Int])((a, b)=> appendLRImproved[Int](a, b))
+  def flatG[A](l:List[List[Int]], z: List[Int]): List[Int] = foldRight[List[A],List[A]](l:List[A], z:List[A])((a, b)=> appendLRImproved[A](a, b))
+  def flat1(l:List[List[Int]], z: List[Int]): List[Int] = {
 
-//  def appendFL[A](a1: List[A], a2: List[A]): List[A] =  a1 match {
-//    case Nil => a2
-//    case Cons(x, xs) => appendFL(xs, a2)
-//  }
+    def loop(l: List[List[Int]], previous:List[Int]) : List[Int] = l match{
+      case Nil => previous
+      case Cons(h, tail) => loop(tail, appendLRImproved[Int](previous, h))
+    }
+
+    loop(l, List())
+  }
+
+  println("flat:")
+  println(flat(List(List(1,2), List(3,4), List(5,6)), List()))
+  println(flat1(List(List(1,2), List(3,4), List(5,6)), List()))
+
   def map[A,B](l: List[A])(f: A => B): List[B] = ???
 }
 
