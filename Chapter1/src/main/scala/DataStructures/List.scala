@@ -263,7 +263,8 @@ object List { // `List` companion object. Contains functions for creating and wo
 
 
   def flat(l:List[List[Int]], z: List[Int]): List[Int] = foldRight[List[Int],List[Int]](l:List[List[Int]], z:List[Int])((a, b)=> appendLRImproved[Int](a, b))
-  def flatG[A](l:List[List[Int]], z: List[Int]): List[Int] = foldRight[List[A],List[A]](l:List[A], z:List[A])((a, b)=> appendLRImproved[A](a, b))
+  def flatG[A](l:List[List[A]], z: List[A]): List[A] = foldRight[List[A],List[A]](l:List[List[A]], z:List[A])((a, b)=> appendLRImproved[A](a, b))
+  def flatG1[A](l:List[List[A]]): List[A] = foldRight(l, Nil:List[A])((a, b)=> appendLRImproved[A](a, b))
   def flat1(l:List[List[Int]], z: List[Int]): List[Int] = {
 
     def loop(l: List[List[Int]], previous:List[Int]) : List[Int] = l match{
