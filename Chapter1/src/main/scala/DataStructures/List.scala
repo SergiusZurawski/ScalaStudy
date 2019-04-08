@@ -280,5 +280,18 @@ object List { // `List` companion object. Contains functions for creating and wo
   println(flat1(List(List(1,2), List(3,4), List(5,6)), List()))
 
   def map[A,B](l: List[A])(f: A => B): List[B] = ???
+
+  def mapNotGeneric(l: List[Int])(f: Int => String): List[String] = {
+    @annotation.tailrec
+    def loop(l: List[Int], z: List[String]): List[String] = l match{
+      case Nil => z
+      case Cons(h, tail) => loop(tail, Cons(f(h), z))
+    }
+
+    loop(l, List[String]())
+  }
+
+  println("mapNotGeneric:")
+  println(mapNotGeneric(List(1,2,3,4))((a) => a.toString))
 }
 
