@@ -279,7 +279,7 @@ object List { // `List` companion object. Contains functions for creating and wo
   println(flat(List(List(1,2), List(3,4), List(5,6)), List()))
   println(flat1(List(List(1,2), List(3,4), List(5,6)), List()))
 
-  def map[A,B](l: List[A])(f: A => B): List[B] = ???
+  def map[A,B](l: List[A])(f: A => B): List[B] = foldRight(l, List[B]())((a, b) => Cons(f(a), b))
 
   def mapNotGeneric(l: List[Int])(f: Int => String): List[String] = {
     @annotation.tailrec
@@ -293,5 +293,34 @@ object List { // `List` companion object. Contains functions for creating and wo
 
   println("mapNotGeneric:")
   println(mapNotGeneric(List(1,2,3,4))((a) => a.toString))
+  println("map")
+  println(map(List(1,2,3,4))((a) => a.toString))
+
+
+  def filter0[A](as: List[A])(f: A => Boolean): List[A] = {
+
+    def loop(as: List[A], z: List[A]): List[A] = as match {
+      case Nil => z;
+      case Cons(h, t) if(f(h)) => loop(t, Cons(h, z))
+      case Cons(h, t) => loop(t, z)
+    }
+
+    loop(as, List())
+  }
+
+  def filter[A](as: List[A])(f: A => Boolean): List[A] = foldRight(as, List[A]())((a,b) => if(f(a)){Cons(a, b)} else {b})
+
+  println("filter0:")
+  println("filter0:")
+  println(filter0(List(1,2,3,4))((a) => a%2 == 0))
+  println("filter0:")
+  println(filter(List(1,2,3,4))((a) => a%2 == 0))
+
+  // def appendLRImproved[A](l1: List[A], l2: List[A]): List[A] = foldRight[A, List[A]](l1, l2)((h, tail) => Cons(h, tail))
+  def flatMap[A,B](as: List[A])(f: A => List[B]) : List[B] = {
+    def loop(as: List[A], z: )
+
+  }
+
 }
 
